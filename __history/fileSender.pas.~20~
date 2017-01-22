@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ExtDlgs,
-  Vcl.Menus;
+  Vcl.Menus, IdTCPConnection, IdTCPClient, IdBaseComponent, IdComponent,
+  IdCustomTCPServer, IdTCPServer;
 
 type
   TfrmMain = class(TForm)
@@ -32,6 +33,8 @@ type
     menuHelp: TMenuItem;
     menuHelpHelp: TMenuItem;
     menuHelpAbout: TMenuItem;
+    TCPServer: TIdTCPServer;
+    TCPClient: TIdTCPClient;
     procedure btn_ReceiveClick(Sender: TObject);
     procedure btn_SendClick(Sender: TObject);
     procedure btn_NewTransferClick(Sender: TObject);
@@ -39,6 +42,8 @@ type
     procedure btn_SendConfirmClick(Sender: TObject);
     procedure menuFileCloseClick(Sender: TObject);
     procedure menuFileNewTransferClick(Sender: TObject);
+    procedure onCreate(Sender: TObject);
+    procedure menuProgramNewPassClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -51,6 +56,20 @@ var
 implementation
 
 {$R *.dfm}
+function RandomPassword(passLen: Integer): string;
+var
+  str: string;
+begin
+  Randomize;
+  //we should change this to only four-digit code like 0000;1234;9999
+  //string with all possible chars
+  str    := 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
+  Result := '';
+  repeat
+    Result := Result + str[Random(Length(str)) + 1];
+  until (Length(Result) = passLen)
+end;
+
 
 procedure TfrmMain.btn_NewTransferClick(Sender: TObject);
 begin
@@ -86,6 +105,16 @@ end;
 procedure TfrmMain.menuFileNewTransferClick(Sender: TObject);
 begin
 btn_NewTransfer.Click();
+end;
+
+procedure TfrmMain.menuProgramNewPassClick(Sender: TObject);
+begin
+lbledt_Password.Text := RandomPassword(20);
+end;
+
+procedure TfrmMain.onCreate(Sender: TObject);
+begin
+lbledt_Password.Text := RandomPassword(20);
 end;
 
 end.

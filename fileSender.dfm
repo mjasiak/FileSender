@@ -30,6 +30,7 @@ object frmMain: TfrmMain
       EditLabel.Width = 42
       EditLabel.Height = 13
       EditLabel.Caption = 'Twoje IP'
+      ReadOnly = True
       TabOrder = 0
     end
     object lbledt_Password: TLabeledEdit
