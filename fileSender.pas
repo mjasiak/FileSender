@@ -52,6 +52,7 @@ type
 
 var
   frmMain: TfrmMain;
+  connectionPassword: string;
 
 implementation
 
@@ -61,13 +62,14 @@ var
   str: string;
 begin
   Randomize;
-  //we should change this to only four-digit code like 0000;1234;9999
-  //string with all possible chars
+  //change to only four-digit code like 0000;1234;9999  ~mjasiak
+  //string with all possible digits
   str    := '0123456789';
   Result := '';
   repeat
     Result := Result + str[Random(Length(str)) + 1];
-  until (Length(Result) = passLen)
+  until (Length(Result) = passLen);
+  connectionPassword := Result;
 end;
 
 function GetIPAddress():String;
@@ -80,7 +82,7 @@ var
   namebuf : Array[0..255] of ansichar;
 begin
   If WSAStartup($101,varTWSAData) <> 0 Then
-  Result := 'No. IP Address'
+  Result := 'IP Address not found'
   Else Begin
     gethostname(namebuf,sizeof(namebuf));
     varPHostEnt := gethostbyname(namebuf);
