@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ExtDlgs,
   Vcl.Menus, IdTCPConnection, IdTCPClient, IdBaseComponent, IdComponent,
-  IdCustomTCPServer, IdTCPServer, Winsock;
+  IdCustomTCPServer, IdTCPServer, Winsock, System.Win.ScktComp;
 
 type
   TfrmMain = class(TForm)
@@ -33,8 +33,8 @@ type
     menuHelp: TMenuItem;
     menuHelpHelp: TMenuItem;
     menuHelpAbout: TMenuItem;
-    TCPServer: TIdTCPServer;
-    TCPClient: TIdTCPClient;
+    ClientSocket1: TClientSocket;
+    ServerSocket1: TServerSocket;
     procedure btn_ReceiveClick(Sender: TObject);
     procedure btn_SendClick(Sender: TObject);
     procedure btn_NewTransferClick(Sender: TObject);

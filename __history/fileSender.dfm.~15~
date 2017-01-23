@@ -10,7 +10,9 @@ object frmMain: TfrmMain
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  Menu = mainMenu
   OldCreateOrder = False
+  OnCreate = onCreate
   PixelsPerInch = 96
   TextHeight = 13
   object grpbx_ParamUser: TGroupBox
@@ -28,6 +30,7 @@ object frmMain: TfrmMain
       EditLabel.Width = 42
       EditLabel.Height = 13
       EditLabel.Caption = 'Twoje IP'
+      ReadOnly = True
       TabOrder = 0
     end
     object lbledt_Password: TLabeledEdit
@@ -38,6 +41,7 @@ object frmMain: TfrmMain
       EditLabel.Width = 27
       EditLabel.Height = 13
       EditLabel.Caption = 'Has'#322'o'
+      ReadOnly = True
       TabOrder = 1
     end
   end
@@ -135,5 +139,50 @@ object frmMain: TfrmMain
   object filedlg_Send: TOpenTextFileDialog
     Left = 744
     Top = 12
+  end
+  object mainMenu: TMainMenu
+    Left = 680
+    Top = 16
+    object menuFile: TMenuItem
+      Caption = 'Plik'
+      object menuFileNewTransfer: TMenuItem
+        Caption = 'Nowy Transfer'
+        OnClick = menuFileNewTransferClick
+      end
+      object menuFileClose: TMenuItem
+        Caption = 'Zako'#324'cz'
+        OnClick = menuFileCloseClick
+      end
+    end
+    object menuProgram: TMenuItem
+      Caption = 'Program'
+      object menuProgramNewPass: TMenuItem
+        Caption = 'Generuj nowe has'#322'o'
+        OnClick = menuProgramNewPassClick
+      end
+    end
+    object menuHelp: TMenuItem
+      Caption = 'Pomoc'
+      object menuHelpHelp: TMenuItem
+        Caption = 'Pomoc'
+      end
+      object menuHelpAbout: TMenuItem
+        Caption = 'Autorzy'
+      end
+    end
+  end
+  object TCPServer: TIdTCPServer
+    Bindings = <>
+    DefaultPort = 0
+    Left = 608
+    Top = 16
+  end
+  object TCPClient: TIdTCPClient
+    ConnectTimeout = 0
+    IPVersion = Id_IPv4
+    Port = 0
+    ReadTimeout = -1
+    Left = 552
+    Top = 16
   end
 end

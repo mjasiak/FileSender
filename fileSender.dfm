@@ -171,18 +171,18 @@ object frmMain: TfrmMain
       end
     end
   end
-  object TCPServer: TIdTCPServer
-    Bindings = <>
-    DefaultPort = 0
-    Left = 608
+  object ClientSocket1: TClientSocket
+    Active = False
+    ClientType = ctNonBlocking
+    Port = 0
+    Left = 584
     Top = 16
   end
-  object TCPClient: TIdTCPClient
-    ConnectTimeout = 0
-    IPVersion = Id_IPv4
+  object ServerSocket1: TServerSocket
+    Active = False
     Port = 0
-    ReadTimeout = -1
-    Left = 552
+    ServerType = stNonBlocking
+    Left = 512
     Top = 16
   end
 end
