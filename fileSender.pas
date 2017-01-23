@@ -60,6 +60,7 @@ implementation
 function RandomPassword(passLen: Integer): string;
 var
   str: string;
+  zmiana: string;
 begin
   Randomize;
   //change to only four-digit code like 0000;1234;9999  ~mjasiak
