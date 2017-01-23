@@ -53,6 +53,10 @@ type
 var
   frmMain: TfrmMain;
   connectionPassword: string;
+  Form1: TfrmMain;
+  F : TFileStream ;
+  FileSize : Integer ;
+  ReceiveFile , SendFile : Boolean ;
 
 implementation
 
