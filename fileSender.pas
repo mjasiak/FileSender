@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ExtDlgs,
   Vcl.Menus, IdTCPConnection, IdTCPClient, IdBaseComponent, IdComponent,
-  IdCustomTCPServer, IdTCPServer, Winsock, System.Win.ScktComp;
+  IdCustomTCPServer, IdTCPServer, Winsock, System.Win.ScktComp, Vcl.ComCtrls;
 
 type
   TfrmMain = class(TForm)
@@ -35,6 +35,9 @@ type
     menuHelpAbout: TMenuItem;
     ClientSocket1: TClientSocket;
     ServerSocket1: TServerSocket;
+    statBar_Receive: TStatusBar;
+    statBar_Send: TStatusBar;
+    saveDlg_Receive: TFileSaveDialog;
     procedure btn_ReceiveClick(Sender: TObject);
     procedure btn_SendClick(Sender: TObject);
     procedure btn_NewTransferClick(Sender: TObject);
@@ -44,6 +47,10 @@ type
     procedure menuFileNewTransferClick(Sender: TObject);
     procedure onCreate(Sender: TObject);
     procedure menuProgramNewPassClick(Sender: TObject);
+    procedure ServerSocket1ClientRead(Sender: TObject;
+      Socket: TCustomWinSocket);
+    procedure ClientSocket1Connect(Sender: TObject; Socket: TCustomWinSocket);
+    procedure ClientSocket1Read(Sender: TObject; Socket: TCustomWinSocket);
   private
     { Private declarations }
   public
@@ -57,12 +64,15 @@ var
   F : TFileStream ;
   FileSize : Integer ;
   ReceiveFile , SendFile : Boolean ;
+  password : String;
 
 implementation
 
 {$R *.dfm}
+
 function RandomPassword(passLen: Integer): string;
 var
+
   str: string;
   zmiana: string;
 begin
@@ -105,12 +115,17 @@ end;
 
 procedure TfrmMain.btn_OpenFileClick(Sender: TObject);
 begin
-filedlg_Send.Execute();
+if filedlg_Send.Execute() then
+F := TFileStream.Create(filedlg_Send.FileName,fmOpenRead);
 end;
 
 procedure TfrmMain.btn_ReceiveClick(Sender: TObject);
 begin
 grpbx_Receive.Visible := True;
+ClientSocket1.Active := False;
+ServerSocket1.Port := 8080;
+ServerSocket1.Active := True;
+statBar_Receive.Panels[0].Text := 'Oczekiwanie na po³¹czenie...';
 end;
 
 procedure TfrmMain.btn_SendClick(Sender: TObject);
@@ -120,7 +135,44 @@ end;
 
 procedure TfrmMain.btn_SendConfirmClick(Sender: TObject);
 begin
-lbledt_ReceiverPass.Text := filedlg_Send.FileName;
+ServerSocket1.Active := False;
+ClientSocket1.Port := 8080;
+ClientSocket1.Address := lbledt_ReceiverIP.Text;
+ClientSocket1.Active := True;
+end;
+
+
+procedure TfrmMain.ClientSocket1Connect(Sender: TObject;
+  Socket: TCustomWinSocket);
+begin
+Socket.SendText(lbledt_ReceiverPass.Text);
+end;
+
+procedure TfrmMain.ClientSocket1Read(Sender: TObject; Socket: TCustomWinSocket);
+var
+  Read: Integer ;
+  Buf : array [1..1024] of Char ;
+  FileName : String ;
+begin
+if Socket.ReceiveText = 'Send' then
+SendFile := True;
+while F.Position < F.Size do  // 3
+  begin
+    Application.ProcessMessages ;  // 4
+    if not SendFile then Break ;  // 5
+    Sleep(10) ;
+
+    Read := F.Read(Buf , SizeOf(Buf)) ;  // 6
+    ClientSocket1.Socket.SendBuf(Buf , Read) ; // 7
+    statBar_Send.Panels[0].Text := 'Przesy³am plik, postêp: ' +
+FormatFloat('0.00' , (F.Position / F.Size) * 100) + '%' ;  // 8
+  end ;
+  if F.Position < F.Size then
+  begin
+  statBar_Send.Panels[0].Text := 'Wysy³anie pliku przerwane.';
+  SendFile := False;
+  F.Free;
+  end;
 end;
 
 procedure TfrmMain.menuFileCloseClick(Sender: TObject);
@@ -135,13 +187,40 @@ end;
 
 procedure TfrmMain.menuProgramNewPassClick(Sender: TObject);
 begin
-lbledt_Password.Text := RandomPassword(4);
+password := RandomPassword(4);
+lbledt_Password.Text := password;
 end;
 
 procedure TfrmMain.onCreate(Sender: TObject);
 begin
-lbledt_Password.Text := RandomPassword(4);
+password  := RandomPassword(4);
 lbledt_IP.Text := GetIPAddress();
+lbledt_Password.Text := password;
 end;
+
+
+procedure TfrmMain.ServerSocket1ClientRead(Sender: TObject;
+  Socket: TCustomWinSocket);
+var
+  Read : Integer ;
+  Buf : array [1..1024] of Char ;
+  FileName : String ;
+  FileSize : Integer;
+begin
+if password = Socket.ReceiveText then
+begin
+statBar_Receive.Panels[0].Text := 'Uda³o siê po³¹czyæ...';
+Socket.SendText('Send');
+ReceiveFile:= True;
+end;
+if ReceiveFile = True then
+    Read := Socket.ReceiveBuf(Buf,SizeOf(Buf));
+If saveDlg_Receive.execute then
+begin   F := TFileStream.Create(saveDlg_Receive.FileName , fmCreate) ;
+    statBar_Receive.Panels[0].Text := 'Odbieram plik' ;
+    F.Write(Buf,Read);
+end;
+end;
+
 
 end.

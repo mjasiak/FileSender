@@ -30,7 +30,6 @@ object frmMain: TfrmMain
       EditLabel.Width = 42
       EditLabel.Height = 13
       EditLabel.Caption = 'Twoje IP'
-      ReadOnly = True
       TabOrder = 0
     end
     object lbledt_Password: TLabeledEdit
@@ -52,15 +51,6 @@ object frmMain: TfrmMain
     Height = 328
     Caption = 'Start'
     TabOrder = 1
-    object btn_NewTransfer: TButton
-      Left = 120
-      Top = 284
-      Width = 97
-      Height = 41
-      Caption = 'Nowy transfer'
-      TabOrder = 3
-      OnClick = btn_NewTransferClick
-    end
     object btn_Send: TButton
       Left = 216
       Top = 160
@@ -79,14 +69,14 @@ object frmMain: TfrmMain
       TabOrder = 1
       OnClick = btn_ReceiveClick
     end
-    object grpbx_Receive: TGroupBox
-      Left = 3
-      Top = 17
-      Width = 331
-      Height = 249
-      Caption = 'Odbierz'
-      TabOrder = 0
-      Visible = False
+    object btn_NewTransfer: TButton
+      Left = 120
+      Top = 284
+      Width = 97
+      Height = 41
+      Caption = 'Nowy transfer'
+      TabOrder = 3
+      OnClick = btn_NewTransferClick
     end
     object grpbx_Send: TGroupBox
       Left = 3
@@ -134,6 +124,36 @@ object frmMain: TfrmMain
         TabOrder = 3
         OnClick = btn_OpenFileClick
       end
+      object statBar_Send: TStatusBar
+        Left = 2
+        Top = 228
+        Width = 327
+        Height = 19
+        Panels = <
+          item
+            Width = 50
+          end>
+        ExplicitTop = 209
+      end
+    end
+    object grpbx_Receive: TGroupBox
+      Left = 3
+      Top = 17
+      Width = 331
+      Height = 249
+      Caption = 'Odbierz'
+      TabOrder = 0
+      Visible = False
+      object statBar_Receive: TStatusBar
+        Left = 2
+        Top = 228
+        Width = 327
+        Height = 19
+        Panels = <
+          item
+            Width = 50
+          end>
+      end
     end
   end
   object filedlg_Send: TOpenTextFileDialog
@@ -175,6 +195,8 @@ object frmMain: TfrmMain
     Active = False
     ClientType = ctNonBlocking
     Port = 0
+    OnConnect = ClientSocket1Connect
+    OnRead = ClientSocket1Read
     Left = 584
     Top = 16
   end
@@ -182,7 +204,15 @@ object frmMain: TfrmMain
     Active = False
     Port = 0
     ServerType = stNonBlocking
+    OnClientRead = ServerSocket1ClientRead
     Left = 512
+    Top = 16
+  end
+  object saveDlg_Receive: TFileSaveDialog
+    FavoriteLinks = <>
+    FileTypes = <>
+    Options = []
+    Left = 448
     Top = 16
   end
 end
