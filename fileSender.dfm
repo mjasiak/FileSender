@@ -133,7 +133,6 @@ object frmMain: TfrmMain
           item
             Width = 50
           end>
-        ExplicitTop = 209
       end
     end
     object grpbx_Receive: TGroupBox

@@ -66,6 +66,7 @@ var
   FileSize: Integer;
   ReceiveFile, SendFile, Receiving: Boolean;
   password: String;
+
 implementation
 
 {$R *.dfm}
@@ -163,7 +164,7 @@ var
   Buf: array [1 .. 1024] of Char;
   FileName: String;
 begin
-  if Socket.ReceiveText = 'Goodpass' then
+  if Socket.ReceiveText = 'Send' then
   begin
     SendFile := True;
     while F.Position < F.Size do // 3
@@ -189,6 +190,11 @@ begin
   begin
     ShowMessage('B³êdne has³o dla podanego adresu');
     Exit;
+  end
+  else if Socket.ReceiveText = 'Goodpass' then
+  begin
+    statBar_Send.Panels[0].Text := 'Oczekujê na akceptacjê pliku...';
+    Socket.SendText('Detonuj');
   end;
 end;
 
@@ -224,41 +230,44 @@ var
   Msg: String;
   FileSize: Integer;
 begin
-  ReceiveFile:=False;
   Msg := Socket.ReceiveText;
-    if Pos(lbledt_Password.Text, Msg) = 1 then
+  if Msg = 'Detonuj' then
   begin
-    FileSize := StrToInt(Copy(Msg, 5, Pos(';', Msg) - 5));
-    FileName := Copy(Msg, Pos(';', Msg) + 1, Length(Msg) - Pos(';', Msg));
-    statBar_Receive.Panels[0].Text := 'Uda³o siê po³¹czyæ...';
-    saveDlg_Receive.FileName := FileName;
     if (MessageBox(0, 'Chcesz plik?', 'Pobieranie pliku',
       MB_YESNO + MB_ICONINFORMATION) = ID_YES) and (saveDlg_Receive.Execute)
     then
     begin
       F := TFileStream.Create(saveDlg_Receive.FileName, fmCreate);
       ReceiveFile := True;
-      Socket.SendText('Goodpass');
+      Socket.SendText('Send');
     end;
-
+  end;
+  if ReceiveFile = True then
+  begin
     while F.Position < FileSize do
     begin
-    if not ReceiveFile then
-        Break; // 5
-      Sleep(10);
-
-    Read := Socket.ReceiveBuf(Buf, sizeof(Buf));
-    statBar_Receive.Panels[0].Text := 'Odbieram plik, postêp: ' +
-      FormatFloat('0.00', (F.Position / FileSize) * 100) + '%'; // 8
-    F.Write(Buf, Read);
+      Read := Socket.ReceiveBuf(Buf, sizeof(Buf));
+      statBar_Receive.Panels[0].Text := 'Odbieram plik, postêp: ' +
+        FormatFloat('0.00', (F.Position / FileSize) * 100) + '%'; // 8
+      F.Write(Buf, Read);
     end;
     if F.Position >= FileSize then
     begin
       F.Free;
       statBar_Receive.Panels[0].Text := 'Przesy³anie zakoñczone sukcesem.';
       ReceiveFile := False;
-      Exit;
     end;
+  end
+  else if Pos(lbledt_Password.Text, Msg) = 1 then
+  begin
+    FileSize := StrToInt(Copy(Msg, 5, Pos(';', Msg) - 5));
+    FileName := Copy(Msg, Pos(';', Msg) + 1, Length(Msg) - Pos(';', Msg));
+    statBar_Receive.Panels[0].Text := 'Uda³o siê po³¹czyæ...';
+    Socket.SendText('Goodpass');
+    saveDlg_Receive.FileName := FileName;
+  end
+  else if Pos(lbledt_Password.Text, Msg) <> 1 then
+    Socket.SendText('Badpass');
 end;
-end;
+
 end.

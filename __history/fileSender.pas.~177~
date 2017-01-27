@@ -66,6 +66,7 @@ var
   FileSize: Integer;
   ReceiveFile, SendFile, Receiving: Boolean;
   password: String;
+
 implementation
 
 {$R *.dfm}
@@ -224,23 +225,7 @@ var
   Msg: String;
   FileSize: Integer;
 begin
-  ReceiveFile:=False;
   Msg := Socket.ReceiveText;
-    if Pos(lbledt_Password.Text, Msg) = 1 then
-  begin
-    FileSize := StrToInt(Copy(Msg, 5, Pos(';', Msg) - 5));
-    FileName := Copy(Msg, Pos(';', Msg) + 1, Length(Msg) - Pos(';', Msg));
-    statBar_Receive.Panels[0].Text := 'Uda³o siê po³¹czyæ...';
-    saveDlg_Receive.FileName := FileName;
-    if (MessageBox(0, 'Chcesz plik?', 'Pobieranie pliku',
-      MB_YESNO + MB_ICONINFORMATION) = ID_YES) and (saveDlg_Receive.Execute)
-    then
-    begin
-      F := TFileStream.Create(saveDlg_Receive.FileName, fmCreate);
-      ReceiveFile := True;
-      Socket.SendText('Goodpass');
-    end;
-
     while F.Position < FileSize do
     begin
     if not ReceiveFile then
@@ -259,6 +244,23 @@ begin
       ReceiveFile := False;
       Exit;
     end;
+  if Pos(lbledt_Password.Text, Msg) = 1 then
+  begin
+    FileSize := StrToInt(Copy(Msg, 5, Pos(';', Msg) - 5));
+    FileName := Copy(Msg, Pos(';', Msg) + 1, Length(Msg) - Pos(';', Msg));
+    statBar_Receive.Panels[0].Text := 'Uda³o siê po³¹czyæ...';
+    saveDlg_Receive.FileName := FileName;
+    if (MessageBox(0, 'Chcesz plik?' + FileName + 'O rozmiarze:' + FileSize, 'Pobieranie pliku',
+      MB_YESNO + MB_ICONINFORMATION) = ID_YES) and (saveDlg_Receive.Execute)
+    then
+    begin
+      F := TFileStream.Create(saveDlg_Receive.FileName, fmCreate);
+      ReceiveFile := True;
+      Socket.SendText('Goodpass');
+    end;
+  end
+  else if Pos(lbledt_Password.Text, Msg) <> 1 then
+    Socket.SendText('Badpass');
 end;
-end;
+
 end.
