@@ -52,6 +52,7 @@ type
       Socket: TCustomWinSocket);
     procedure ClientSocket1Connect(Sender: TObject; Socket: TCustomWinSocket);
     procedure ClientSocket1Read(Sender: TObject; Socket: TCustomWinSocket);
+    procedure OnlyDigitChars(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -112,6 +113,11 @@ procedure TfrmMain.btn_NewTransferClick(Sender: TObject);
 begin
   grpbx_Send.Visible := False;
   grpbx_Receive.Visible := False;
+  lbledt_ReceiverIP.Enabled := true;
+  lbledt_ReceiverPass.Enabled := true;
+  lbledt_ReceiverIP.Text := '';
+  lbledt_ReceiverPass.Text := '';
+  F.Free;
 end;
 
 procedure TfrmMain.btn_OpenFileClick(Sender: TObject);
@@ -142,6 +148,8 @@ begin
     ClientSocket1.Port := 8080;
     ClientSocket1.Address := lbledt_ReceiverIP.Text;
     ClientSocket1.Active := True;
+    lbledt_ReceiverIP.Enabled := false;
+    lbledt_ReceiverPass.Enabled := false;
   end
   else
   begin
@@ -184,12 +192,24 @@ begin
       SendFile := False;
       Socket.SendText('Detonuj');
     end;
+    Socket.Close;
   end
   else if Socket.ReceiveText = 'Badpass' then
   begin
     ShowMessage('B³êdne has³o dla podanego adresu');
+    Socket.Close;
     Exit;
   end;
+end;
+
+procedure TfrmMain.OnlyDigitChars(Sender: TObject; var Key: Char);
+var DecimalSeparator: Char;
+begin
+DecimalSeparator := '.';
+if not (Key in [#8, '0'..'9', DecimalSeparator]) then
+  begin
+     Key := #0;
+  end
 end;
 
 procedure TfrmMain.menuFileCloseClick(Sender: TObject);
@@ -226,7 +246,7 @@ var
 begin
   ReceiveFile:=False;
   Msg := Socket.ReceiveText;
-    if Pos(lbledt_Password.Text, Msg) = 1 then
+  if Pos(lbledt_Password.Text, Msg) = 1 then
   begin
     FileSize := StrToInt(Copy(Msg, 5, Pos(';', Msg) - 5));
     FileName := Copy(Msg, Pos(';', Msg) + 1, Length(Msg) - Pos(';', Msg));
@@ -259,6 +279,7 @@ begin
       ReceiveFile := False;
       Exit;
     end;
+    Socket.Close;
 end;
 end;
 end.
