@@ -7,7 +7,8 @@ uses
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ExtDlgs,
   Vcl.Menus, IdTCPConnection, IdTCPClient, IdBaseComponent, IdComponent,
-  IdCustomTCPServer, IdTCPServer, Winsock, System.Win.ScktComp, Vcl.ComCtrls;
+  IdCustomTCPServer, IdTCPServer, Winsock, System.Win.ScktComp, Vcl.ComCtrls,u_SplashScreen,
+  HTMLHelpViewer,ShellAPI;
 
 type
   TfrmMain = class(TForm)
@@ -53,6 +54,7 @@ type
     procedure ClientSocket1Connect(Sender: TObject; Socket: TCustomWinSocket);
     procedure ClientSocket1Read(Sender: TObject; Socket: TCustomWinSocket);
     procedure OnlyDigitChars(Sender: TObject; var Key: Char);
+    procedure menuHelpHelpClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -220,6 +222,11 @@ end;
 procedure TfrmMain.menuFileNewTransferClick(Sender: TObject);
 begin
   btn_NewTransfer.Click();
+end;
+
+procedure TfrmMain.menuHelpHelpClick(Sender: TObject);
+begin
+ ShellExecute(0,'open','C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\fileSender-git\File Sender.chm','','',SW_SHOWNORMAL);
 end;
 
 procedure TfrmMain.menuProgramNewPassClick(Sender: TObject);

@@ -2,9 +2,13 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>1899-12-30 00:00:00.000.879,C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\fileSender\Project1.dproj</Transaction>
-    <Transaction>1899-12-30 00:00:00.000.868,C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\fileSender\fileSender.dfm</Transaction>
-    <Transaction>1899-12-30 00:00:00.000.868,C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\fileSender\fileSender.pas</Transaction>
     <Transaction>1899-12-30 00:00:00.000.367,C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\fileSender\fileSenderProject.dproj=C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\fileSender\Project1.dproj</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.868,C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\fileSender\fileSender.dfm</Transaction>
     <Transaction>1899-12-30 00:00:00.000.597,=C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.868,C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\fileSender\fileSender.pas</Transaction>
+    <Transaction>2017-02-05 13:37:43.496,=C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\fileSender-git\Unit1.pas</Transaction>
+    <Transaction>2017-02-05 13:38:01.399,=C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\fileSender-git\Unit2.pas</Transaction>
+    <Transaction>2017-02-05 13:39:28.472,C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\fileSender-git\u_SplashScreen.dfm=C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\fileSender-git\Unit2.dfm</Transaction>
+    <Transaction>2017-02-05 13:39:28.472,C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\fileSender-git\u_SplashScreen.pas=C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\fileSender-git\Unit2.pas</Transaction>
   </Transactions>
 </BorlandProject>

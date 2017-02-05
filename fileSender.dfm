@@ -187,6 +187,7 @@ object frmMain: TfrmMain
       Caption = 'Pomoc'
       object menuHelpHelp: TMenuItem
         Caption = 'Pomoc'
+        OnClick = menuHelpHelpClick
       end
       object menuHelpAbout: TMenuItem
         Caption = 'Autorzy'

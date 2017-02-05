@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{AF5E8699-B590-4338-A055-227EA0156FF2}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="fileSenderProject.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="ENU\fileSenderProject_ENU.bdsproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="fileSenderProject">
+        <MSBuild Projects="fileSenderProject.dproj"/>
+    </Target>
+    <Target Name="fileSenderProject:Clean">
+        <MSBuild Projects="fileSenderProject.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="fileSenderProject:Make">
+        <MSBuild Projects="fileSenderProject.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="fileSenderProject_ENU">
+        <MSBuild Projects="ENU\fileSenderProject_ENU.bdsproj"/>
+    </Target>
+    <Target Name="fileSenderProject_ENU:Clean">
+        <MSBuild Projects="ENU\fileSenderProject_ENU.bdsproj" Targets="Clean"/>
+    </Target>
+    <Target Name="fileSenderProject_ENU:Make">
+        <MSBuild Projects="ENU\fileSenderProject_ENU.bdsproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="fileSenderProject;fileSenderProject_ENU"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="fileSenderProject:Clean;fileSenderProject_ENU:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="fileSenderProject:Make;fileSenderProject_ENU:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
