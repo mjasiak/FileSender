@@ -140,8 +140,8 @@ object frmMain: TfrmMain
     end
   end
   object grpbx_ParamUser: TGroupBox
-    Left = 24
-    Top = 68
+    Left = 8
+    Top = 20
     Width = 289
     Height = 328
     Caption = 'Parametry u'#380'ytkownika'
