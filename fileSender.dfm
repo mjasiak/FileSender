@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
   Left = 0
   Top = 0
-  Caption = 'frmMain'
+  Caption = 'FileSender'
   ClientHeight = 404
   ClientWidth = 782
   Color = clBtnFace
@@ -117,6 +117,16 @@ object frmMain: TfrmMain
           item
             Width = 50
           end>
+      end
+      object btn_nextFile: TButton
+        Left = 23
+        Top = 136
+        Width = 114
+        Height = 25
+        Caption = 'Kolejny plik'
+        TabOrder = 5
+        Visible = False
+        OnClick = btn_nextFileClick
       end
     end
     object btn_NewTransfer: TButton

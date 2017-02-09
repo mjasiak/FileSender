@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
   Left = 0
   Top = 0
-  Caption = 'frmMain'
+  Caption = 'FileSender'
   ClientHeight = 404
   ClientWidth = 782
   Color = clBtnFace
@@ -22,63 +22,6 @@ object frmMain: TfrmMain
     Height = 328
     Caption = 'Start'
     TabOrder = 1
-    object grpbx_Send: TGroupBox
-      Left = 3
-      Top = 17
-      Width = 331
-      Height = 249
-      Caption = 'Wy'#347'lij'
-      TabOrder = 4
-      Visible = False
-      object lbledt_ReceiverIP: TLabeledEdit
-        Left = 24
-        Top = 48
-        Width = 121
-        Height = 21
-        EditLabel.Width = 56
-        EditLabel.Height = 13
-        EditLabel.Caption = 'IP Odbiorcy'
-        TabOrder = 0
-      end
-      object lbledt_ReceiverPass: TLabeledEdit
-        Left = 24
-        Top = 92
-        Width = 121
-        Height = 21
-        EditLabel.Width = 71
-        EditLabel.Height = 13
-        EditLabel.Caption = 'Has'#322'o odbiorcy'
-        TabOrder = 1
-      end
-      object btn_SendConfirm: TButton
-        Left = 239
-        Top = 189
-        Width = 89
-        Height = 33
-        Caption = 'Wy'#347'lij'
-        TabOrder = 2
-        OnClick = btn_SendConfirmClick
-      end
-      object btn_OpenFile: TButton
-        Left = 24
-        Top = 136
-        Width = 113
-        Height = 25
-        Caption = 'Wybierz plik...'
-        TabOrder = 3
-        OnClick = btn_OpenFileClick
-      end
-      object statBar_Send: TStatusBar
-        Left = 2
-        Top = 228
-        Width = 327
-        Height = 19
-        Panels = <
-          item
-            Width = 50
-          end>
-      end
-    end
     object btn_Receive: TButton
       Left = 24
       Top = 160
@@ -106,6 +49,66 @@ object frmMain: TfrmMain
       TabOrder = 0
       Visible = False
       object statBar_Receive: TStatusBar
+        Left = 2
+        Top = 228
+        Width = 327
+        Height = 19
+        Panels = <
+          item
+            Width = 50
+          end>
+      end
+    end
+    object grpbx_Send: TGroupBox
+      Left = 3
+      Top = 17
+      Width = 331
+      Height = 249
+      Caption = 'Wy'#347'lij'
+      TabOrder = 4
+      Visible = False
+      object lbledt_ReceiverIP: TLabeledEdit
+        Left = 24
+        Top = 48
+        Width = 121
+        Height = 21
+        EditLabel.Width = 56
+        EditLabel.Height = 13
+        EditLabel.Caption = 'IP Odbiorcy'
+        TabOrder = 0
+        OnKeyPress = OnlyDigitChars
+      end
+      object lbledt_ReceiverPass: TLabeledEdit
+        Left = 24
+        Top = 92
+        Width = 121
+        Height = 21
+        EditLabel.Width = 71
+        EditLabel.Height = 13
+        EditLabel.Caption = 'Has'#322'o odbiorcy'
+        MaxLength = 4
+        TabOrder = 1
+        OnKeyPress = OnlyDigitChars
+      end
+      object btn_SendConfirm: TButton
+        Left = 239
+        Top = 189
+        Width = 89
+        Height = 33
+        Caption = 'Wy'#347'lij'
+        TabOrder = 2
+        OnClick = btn_SendConfirmClick
+      end
+      object btn_OpenFile: TButton
+        Left = 24
+        Top = 136
+        Width = 113
+        Height = 25
+        Caption = 'Wybierz plik...'
+        TabOrder = 3
+        OnClick = btn_OpenFileClick
+      end
+      object statBar_Send: TStatusBar
         Left = 2
         Top = 228
         Width = 327
@@ -184,6 +187,7 @@ object frmMain: TfrmMain
       Caption = 'Pomoc'
       object menuHelpHelp: TMenuItem
         Caption = 'Pomoc'
+        OnClick = menuHelpHelpClick
       end
       object menuHelpAbout: TMenuItem
         Caption = 'Autorzy'

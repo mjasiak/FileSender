@@ -1034,11 +1034,11 @@ BEGIN
 	System_SysConst_SRangeError,	L"Range check error"
 END
 
-/* e:\program files (x86)\embarcadero\studio\15.0\lib\Win32\release\Controls.res */
-/* e:\program files (x86)\embarcadero\studio\15.0\lib\Win32\release\CategoryButtons.res */
-/* e:\program files (x86)\embarcadero\studio\15.0\lib\Win32\release\Buttons.res */
-/* e:\program files (x86)\embarcadero\studio\15.0\lib\Win32\release\ExtDlgs.res */
-/* C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\fileSender-git\u_SplashScreen.dfm */
-/* C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\fileSender-git\fileSender.dfm */
-/* C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\fileSender-git\fileSenderProject.res */
-/* C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\fileSender-git\fileSenderProject.drf */
+/* e:\embarcadero\embarcadero\studio\15.0\lib\Win32\release\Controls.res */
+/* e:\embarcadero\embarcadero\studio\15.0\lib\Win32\release\CategoryButtons.res */
+/* e:\embarcadero\embarcadero\studio\15.0\lib\Win32\release\Buttons.res */
+/* e:\embarcadero\embarcadero\studio\15.0\lib\Win32\release\ExtDlgs.res */
+/* D:\Jasiek\Pobrane\fileSender\u_SplashScreen.dfm */
+/* D:\Jasiek\Pobrane\fileSender\fileSender.dfm */
+/* D:\Jasiek\Pobrane\fileSender\fileSenderProject.res */
+/* D:\Jasiek\Pobrane\fileSender\fileSenderProject.drf */

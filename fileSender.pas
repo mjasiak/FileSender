@@ -40,6 +40,7 @@ type
     statBar_Receive: TStatusBar;
     statBar_Send: TStatusBar;
     saveDlg_Receive: TFileSaveDialog;
+    btn_nextFile: TButton;
     procedure btn_ReceiveClick(Sender: TObject);
     procedure btn_SendClick(Sender: TObject);
     procedure btn_NewTransferClick(Sender: TObject);
@@ -55,6 +56,7 @@ type
     procedure ClientSocket1Read(Sender: TObject; Socket: TCustomWinSocket);
     procedure OnlyDigitChars(Sender: TObject; var Key: Char);
     procedure menuHelpHelpClick(Sender: TObject);
+    procedure btn_nextFileClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -75,7 +77,6 @@ implementation
 
 function RandomPassword(passLen: Integer): string;
 var
-
   str: string;
   zmiana: string;
 begin
@@ -113,13 +114,29 @@ end;
 
 procedure TfrmMain.btn_NewTransferClick(Sender: TObject);
 begin
+  ServerSocket1.NewInstance;
+  ServerSocket1.Active := False;
+  ClientSocket1.NewInstance;
+  ClientSocket1.Active := false;
+
   grpbx_Send.Visible := False;
   grpbx_Receive.Visible := False;
   lbledt_ReceiverIP.Enabled := true;
   lbledt_ReceiverPass.Enabled := true;
   lbledt_ReceiverIP.Text := '';
   lbledt_ReceiverPass.Text := '';
+  btn_nextFile.Visible := false;
+  btn_SendConfirm.Enabled := true;
+  btn_OpenFile.Visible := true;
   F.Free;
+end;
+
+procedure TfrmMain.btn_nextFileClick(Sender: TObject);
+begin
+if filedlg_Send.Execute then
+    F := TFileStream.Create(filedlg_Send.FileName, fmOpenRead);
+btn_SendConfirm.Enabled := true;
+btn_nextFile.Enabled := false;
 end;
 
 procedure TfrmMain.btn_OpenFileClick(Sender: TObject);
@@ -152,6 +169,7 @@ begin
     ClientSocket1.Active := True;
     lbledt_ReceiverIP.Enabled := false;
     lbledt_ReceiverPass.Enabled := false;
+    btn_SendConfirm.Enabled := false;
   end
   else
   begin
@@ -188,6 +206,8 @@ begin
       statBar_Send.Panels[0].Text := 'Przesy³am plik, postêp: ' +
         FormatFloat('0.00', (F.Position / F.Size) * 100) + '%'; // 8
     end;
+    btn_nextFile.Visible := true;
+    btn_nextFile.Enabled := true;
     if F.Position < F.Size then
     begin
       statBar_Send.Panels[0].Text := 'Oczekujê na odbiór pliku....';
@@ -199,9 +219,13 @@ begin
   else if Socket.ReceiveText = 'Badpass' then
   begin
     ShowMessage('B³êdne has³o dla podanego adresu');
+    btn_SendConfirm.Enabled := true;
+    btn_nextFile.Visible := false;
     Socket.Close;
     Exit;
   end;
+  if F.Position = F.Size then btn_OpenFile.Visible := false;
+
 end;
 
 procedure TfrmMain.OnlyDigitChars(Sender: TObject; var Key: Char);

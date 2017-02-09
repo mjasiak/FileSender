@@ -7,7 +7,8 @@ uses
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ExtDlgs,
   Vcl.Menus, IdTCPConnection, IdTCPClient, IdBaseComponent, IdComponent,
-  IdCustomTCPServer, IdTCPServer, Winsock, System.Win.ScktComp, Vcl.ComCtrls,u_SplashScreen;
+  IdCustomTCPServer, IdTCPServer, Winsock, System.Win.ScktComp, Vcl.ComCtrls,u_SplashScreen,
+  HTMLHelpViewer,ShellAPI;
 
 type
   TfrmMain = class(TForm)
@@ -53,6 +54,7 @@ type
     procedure ClientSocket1Connect(Sender: TObject; Socket: TCustomWinSocket);
     procedure ClientSocket1Read(Sender: TObject; Socket: TCustomWinSocket);
     procedure OnlyDigitChars(Sender: TObject; var Key: Char);
+    procedure menuHelpHelpClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -222,6 +224,11 @@ begin
   btn_NewTransfer.Click();
 end;
 
+procedure TfrmMain.menuHelpHelpClick(Sender: TObject);
+begin
+ ShellExecute(0,'open','C:\Users\Sebastian\Documents\Embarcadero\Studio\Projects\fileSender-git\File Sender.chm','','',SW_SHOWNORMAL);
+end;
+
 procedure TfrmMain.menuProgramNewPassClick(Sender: TObject);
 begin
   password := RandomPassword(4);
@@ -233,16 +240,6 @@ begin
   password := RandomPassword(4);
   lbledt_IP.Text := GetIPAddress();
   lbledt_Password.Text := password;
-  frmSplashScreen.Show;
-  frmSplashScreen.ProgressBar1.StepBy(50);
-  frmSplashScreen.Label2.Caption := '£adujê zasoby...';
-  //frmSplashScreen.Update;
-  Sleep(100);
-    frmSplashScreen.ProgressBar1.StepBy(50);
-  frmSplashScreen.Label2.Caption := '£adujê zasoby...';
-  //frmSplashScreen.Update   ;
-  Sleep(100);
-  frmSplashScreen.Hide;
 end;
 
 procedure TfrmMain.ServerSocket1ClientRead(Sender: TObject;
