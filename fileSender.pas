@@ -128,7 +128,8 @@ begin
   btn_nextFile.Visible := false;
   btn_SendConfirm.Enabled := true;
   btn_OpenFile.Visible := true;
-  F.Free;
+  statBar_Receive.Panels[0].Text := 'Oczekiwanie na po³¹czenie...';
+  statBar_Send.Panels[0].Text := '';
 end;
 
 procedure TfrmMain.btn_nextFileClick(Sender: TObject);
@@ -291,19 +292,16 @@ begin
       ReceiveFile := True;
       Socket.SendText('Goodpass');
     end;
-
-    while F.Position < FileSize do
+    while F.Position < F.Size do
     begin
-    if not ReceiveFile then
-        Break; // 5
-      Sleep(10);
+      if not ReceiveFile then Break; // 5
 
-    Read := Socket.ReceiveBuf(Buf, sizeof(Buf));
-    statBar_Receive.Panels[0].Text := 'Odbieram plik, postêp: ' +
-      FormatFloat('0.00', (F.Position / FileSize) * 100) + '%'; // 8
-    F.Write(Buf, Read);
+      Sleep(10);
+      Read := Socket.ReceiveBuf(Buf, sizeof(Buf));
+      statBar_Receive.Panels[0].Text := 'Odbieram plik, postêp: ' + FormatFloat('0.00', (F.Position / FileSize) * 100) + '%'; // 8
+      F.Write(Buf, Read);
     end;
-    if F.Position >= FileSize then
+    if F.Position >= F.Size then
     begin
       F.Free;
       statBar_Receive.Panels[0].Text := 'Przesy³anie zakoñczone sukcesem.';

@@ -56,6 +56,7 @@ type
     procedure ClientSocket1Read(Sender: TObject; Socket: TCustomWinSocket);
     procedure OnlyDigitChars(Sender: TObject; var Key: Char);
     procedure menuHelpHelpClick(Sender: TObject);
+    procedure btn_nextFileClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -113,13 +114,31 @@ end;
 
 procedure TfrmMain.btn_NewTransferClick(Sender: TObject);
 begin
+  ServerSocket1.NewInstance;
+  ServerSocket1.Active := False;
+  ClientSocket1.NewInstance;
+  ClientSocket1.Active := false;
+
   grpbx_Send.Visible := False;
   grpbx_Receive.Visible := False;
   lbledt_ReceiverIP.Enabled := true;
   lbledt_ReceiverPass.Enabled := true;
   lbledt_ReceiverIP.Text := '';
   lbledt_ReceiverPass.Text := '';
+  btn_nextFile.Visible := false;
+  btn_SendConfirm.Enabled := true;
+  btn_OpenFile.Visible := true;
   F.Free;
+  statBar_Receive.Panels[0].Text := 'Oczekiwanie na po³¹czenie...';
+  statBar_Send.Panels[0].Text := '';
+end;
+
+procedure TfrmMain.btn_nextFileClick(Sender: TObject);
+begin
+if filedlg_Send.Execute then
+    F := TFileStream.Create(filedlg_Send.FileName, fmOpenRead);
+btn_SendConfirm.Enabled := true;
+btn_nextFile.Enabled := false;
 end;
 
 procedure TfrmMain.btn_OpenFileClick(Sender: TObject);
@@ -190,6 +209,7 @@ begin
         FormatFloat('0.00', (F.Position / F.Size) * 100) + '%'; // 8
     end;
     btn_nextFile.Visible := true;
+    btn_nextFile.Enabled := true;
     if F.Position < F.Size then
     begin
       statBar_Send.Panels[0].Text := 'Oczekujê na odbiór pliku....';
@@ -206,6 +226,8 @@ begin
     Socket.Close;
     Exit;
   end;
+  if F.Position = F.Size then btn_OpenFile.Visible := false;
+
 end;
 
 procedure TfrmMain.OnlyDigitChars(Sender: TObject; var Key: Char);
@@ -271,17 +293,14 @@ begin
       ReceiveFile := True;
       Socket.SendText('Goodpass');
     end;
-
-    while F.Position < FileSize do
+    while F.Position < F.Size do
     begin
-    if not ReceiveFile then
-        Break; // 5
-      Sleep(10);
+      if not ReceiveFile then Break; // 5
 
-    Read := Socket.ReceiveBuf(Buf, sizeof(Buf));
-    statBar_Receive.Panels[0].Text := 'Odbieram plik, postêp: ' +
-      FormatFloat('0.00', (F.Position / FileSize) * 100) + '%'; // 8
-    F.Write(Buf, Read);
+      Sleep(10);
+      Read := Socket.ReceiveBuf(Buf, sizeof(Buf));
+      statBar_Receive.Panels[0].Text := 'Odbieram plik, postêp: ' + FormatFloat('0.00', (F.Position / FileSize) * 100) + '%'; // 8
+      F.Write(Buf, Read);
     end;
     if F.Position >= FileSize then
     begin
